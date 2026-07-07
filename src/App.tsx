@@ -4,6 +4,7 @@ import EmployeeCard from './components/EmployeeCard'
 import type { Employee } from './types/Employee'
 import {useState} from 'react'
 import './App.css'
+import EmployeeForm from './components/EmployeeForm'
 
 function App() {
   
@@ -84,6 +85,15 @@ const filteredEmployee = employees.filter((employee) => {
     cancelEdit()
      }
 
+  const handleInputChange = (
+    field: string, value: string
+  ) => {
+    setFormData({
+      ...formData,
+        [field]: value
+  })
+  }
+
   const handleSubmit = () => {
     if (editingEmployee) {
       saveEmployee()
@@ -101,49 +111,14 @@ const filteredEmployee = employees.filter((employee) => {
       onChange={(event) => {
         setSearch(event.target.value)
       }}/>
-      <p>Search: {search}</p>
-      <p>Editing ID : {editingEmployee?.id}</p>
 
-      Name :
-      <input value={formData.name}
-      onChange={(event) => {
-        setFormData({...formData, name : event.target.value})
-        console.log(formData)
-      }}
-      /><br />
-
-      Department :
-      <input value={formData.department} 
-      onChange={(event) => {
-        setFormData({...formData, department : event.target.value})
-        console.log(formData)
-      }}
-      /><br />
-
-      Position :
-      <input value={formData.position} 
-      onChange={(event) => {
-        setFormData({...formData, position : event.target.value})
-        console.log(formData)
-      }}
-      /><br />
-      
-      Email :
-      <input value={formData.email} 
-      onChange={(event) => {
-        setFormData({...formData, email : event.target.value})
-        console.log(formData)
-      }}
+      <EmployeeForm 
+        formData={formData}
+        onInputChange={handleInputChange}
+        editingEmployee={editingEmployee}
+        onCancel={cancelEdit}
+        onSubmit={handleSubmit}
       />
-      <br />
-
-      {editingEmployee && (
-        
-          <button onClick={cancelEdit}>Cancel Edit</button>
-        
-      )}
-
-        <button onClick={handleSubmit}>{editingEmployee ? 'Save Employee' : 'Add Employee'}</button>
       
 
       {filteredEmployee.map((employee) => (
