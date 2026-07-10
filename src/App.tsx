@@ -7,7 +7,6 @@ import './App.css'
 import EmployeeForm from './components/EmployeeForm'
 
 function App() {
-  
 
 const emptyForm = {
   name: "",
@@ -24,6 +23,13 @@ const [formData, setFormData] = useState({
   position:"",
   email:""
 })
+const [errors, setErrors] = useState({
+  name: "",
+  department:"",
+  position:"",
+  email:""
+})
+
 const keyword = search.toLowerCase()
 const filteredEmployee = employees.filter((employee) => {
   return (
@@ -39,6 +45,18 @@ const filteredEmployee = employees.filter((employee) => {
 
   const saveEmployee = () => {
       if(!editingEmployee) return
+
+      const result = validateForm()
+
+      setErrors(result)
+
+      const errorMessage = Object.values(result)
+      const hasErrors = errorMessage.some(e => e !== "")
+
+      if (hasErrors) {
+        errorMessage.map(e => console.log(e))
+        return
+      }
 
       const updatedEmployee = employees.map((employee) => {
         if(employee.id === editingEmployee.id) {
@@ -74,6 +92,18 @@ const filteredEmployee = employees.filter((employee) => {
 
   const addEmployee = () => {
 
+    const result = validateForm()
+
+      setErrors(result)
+
+      const errorMessage = Object.values(result)
+      const hasErrors = errorMessage.some(e => e !== "")
+
+      if (hasErrors) {
+        errorMessage.map(e => console.log(e))
+        return
+      }
+
     const lastEmployee = employees[employees.length -1];
 
     const newEmployee = {
@@ -103,6 +133,37 @@ const filteredEmployee = employees.filter((employee) => {
     }
   }
 
+  const tryConsole = () => {
+    const plus = 1+1
+    return plus
+  }
+
+  const validateForm = () => {
+    const newErrors = {
+      name: "",
+      department:"",
+      position:"",
+      email:""
+    }
+
+    if (formData.name.trim() === ""){
+      newErrors.name = "Name is required"
+    }
+    if (formData.department.trim() === ""){
+      newErrors.department = "Department is required"
+    }
+    if (formData.position.trim() === ""){
+      newErrors.position = "Position is required"
+    }
+    if (formData.email.trim() === ""){
+      newErrors.email = "Email is not valid"
+      if (formData.email.includes("@")){
+        newErrors.email = "Email is not valid"
+      }
+    }
+    return newErrors 
+  }
+
   return (
     <div>
       <h1>Employee Management System</h1>
@@ -129,9 +190,10 @@ const filteredEmployee = employees.filter((employee) => {
         editEmployee={editEmployee}
       />
     ))}
-
+  <button onClick={() => tryConsole()}>Cek</button>
   </div>
   );
+
 }
 
 export default App
