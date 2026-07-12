@@ -121,8 +121,12 @@ const filteredEmployee = employees.filter((employee) => {
     setFormData({
       ...formData,
         [field]: value
-  })
-  }
+  });
+  setErrors((prevErrors) => ({
+        ...prevErrors,
+      [field] : ""
+    })
+  )}
 
   const handleSubmit = () => {
     if (editingEmployee) {
@@ -131,11 +135,6 @@ const filteredEmployee = employees.filter((employee) => {
     else {
       addEmployee()
     }
-  }
-
-  const tryConsole = () => {
-    const plus = 1+1
-    return plus
   }
 
   const validateForm = () => {
@@ -157,10 +156,11 @@ const filteredEmployee = employees.filter((employee) => {
     }
     if (formData.email.trim() === ""){
       newErrors.email = "Email is not valid"
-      if (formData.email.includes("@")){
+      
+    }
+    if (!formData.email.includes("@")){
         newErrors.email = "Email is not valid"
       }
-    }
     return newErrors 
   }
 
@@ -175,6 +175,7 @@ const filteredEmployee = employees.filter((employee) => {
 
       <EmployeeForm 
         formData={formData}
+        errors={errors}
         onInputChange={handleInputChange}
         editingEmployee={editingEmployee}
         onCancel={cancelEdit}
@@ -190,7 +191,6 @@ const filteredEmployee = employees.filter((employee) => {
         editEmployee={editEmployee}
       />
     ))}
-  <button onClick={() => tryConsole()}>Cek</button>
   </div>
   );
 
