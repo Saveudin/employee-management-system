@@ -5,6 +5,8 @@ import type { Employee } from './types/Employee'
 import {useState} from 'react'
 import './App.css'
 import EmployeeForm from './components/EmployeeForm'
+import { useEffect } from 'react'
+import type { ApiUser } from './types/ApiUser'
 
 function App() {
 
@@ -29,6 +31,33 @@ const [errors, setErrors] = useState({
   position:"",
   email:""
 })
+
+const fetchEmployees = async () => {
+    
+    try {
+      const response = await fetch("https://jsonplaceholder.typicode.com/users")
+      
+      if(!response.ok) {
+        throw new Error("Failed to fetch employee")
+      }
+
+      const data : ApiUser[] = await response.json()
+      const newData = data.map((e) => ({
+        id: e.id,
+        name: e.name,
+        department: e.company.name,
+        position: "Employee",
+        email: e.email
+      }))
+      setEmployees(newData)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+useEffect(() => {
+  fetchEmployees()
+}, [])
 
 const keyword = search.toLowerCase()
 const filteredEmployee = employees.filter((employee) => {
