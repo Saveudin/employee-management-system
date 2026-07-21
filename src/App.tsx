@@ -1,14 +1,19 @@
 
-import {initialEmployees} from './data/employees'
-import EmployeeCard from './components/EmployeeCard'
+import { useEmployees } from './hooks/useEmployees'
+import EmployeeList from './components/EmployeeList'
 import type { Employee } from './types/Employee'
 import {useState} from 'react'
 import './App.css'
 import EmployeeForm from './components/EmployeeForm'
 import { useEffect } from 'react'
-import type { ApiUser } from './types/ApiUser'
 
 function App() {
+
+  const {
+    employees,
+    loading,
+    error
+  } = useEmployees()
 
 const emptyForm = {
   name: "",
@@ -16,8 +21,9 @@ const emptyForm = {
   position:"",
   email:""
 }
-const [employees, setEmployees] = useState(initialEmployees);
+
 const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
+
 const [search, setSearch] = useState("");
 const [formData, setFormData] = useState({
   name: "",
@@ -25,39 +31,13 @@ const [formData, setFormData] = useState({
   position:"",
   email:""
 })
+
 const [errors, setErrors] = useState({
   name: "",
   department:"",
   position:"",
   email:""
 })
-
-const fetchEmployees = async () => {
-    
-    try {
-      const response = await fetch("https://jsonplaceholder.typicode.com/users")
-      
-      if(!response.ok) {
-        throw new Error("Failed to fetch employee")
-      }
-
-      const data : ApiUser[] = await response.json()
-      const newData = data.map((e) => ({
-        id: e.id,
-        name: e.name,
-        department: e.company.name,
-        position: "Employee",
-        email: e.email
-      }))
-      setEmployees(newData)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-useEffect(() => {
-  fetchEmployees()
-}, [])
 
 const keyword = search.toLowerCase()
 const filteredEmployee = employees.filter((employee) => {
@@ -193,6 +173,10 @@ const filteredEmployee = employees.filter((employee) => {
     return newErrors 
   }
 
+  if (loading) {
+    <p>Loading...</p>
+  }
+
   return (
     <div>
       <h1>Employee Management System</h1>
@@ -211,15 +195,13 @@ const filteredEmployee = employees.filter((employee) => {
         onSubmit={handleSubmit}
       />
       
-
-      {filteredEmployee.map((employee) => (
-        <EmployeeCard 
-        key={employee.id}
-        employee={employee}
+      <EmployeeList 
+        loading={loading}
+        error={error}
+        filteredEmployee={filteredEmployee}
         deleteEmployee={deleteEmployee}
         editEmployee={editEmployee}
       />
-    ))}
   </div>
   );
 
