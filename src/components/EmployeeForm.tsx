@@ -1,22 +1,13 @@
 import type { Employee } from "../types/Employee";
+import type {EmployeeForm} from "../types/EmployeeForm"
 
 interface EmployeeFormProps {
-    formData : {
-        name: string;
-        department: string;
-        position: string;
-        email: string;
-    },
+    formData : EmployeeForm,
     onInputChange : (field:string, value:string) => void,
     editingEmployee : Employee | null,
     onCancel : () => void,
     onSubmit : () => void,
-    errors : {
-        name: string;
-        department: string;
-        position: string;
-        email: string;
-    }
+    errors : EmployeeForm
 }
 
 

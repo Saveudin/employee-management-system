@@ -3,6 +3,7 @@ import { initialEmployees } from "../data/employees";
 import type { ApiUser } from "../types/ApiUser";
 import axios from "axios";
 import { useEffect } from "react";
+import type {EmployeeForm} from "../types/EmployeeForm"
 
 export function useEmployees() {
     const [employees, setEmployees] = useState(initialEmployees);
@@ -38,5 +39,42 @@ export function useEmployees() {
     useEffect(() => {
         fetchEmployees()
 }, [])
-    return {employees, loading, error}
+
+    const addEmployee = async (employeeData: EmployeeForm) => {
+      await axios.post(
+        "http://localhost:3001/",
+        employeeData
+      )
+      await fetchEmployees()
+
+     }
+
+  return {employees, loading, error, addEmployee}
 }
+
+
+// const result = validateForm()
+
+//       setErrors(result)
+
+//       const errorMessage = Object.values(result)
+//       const hasErrors = errorMessage.some(e => e !== "")
+
+//       if (hasErrors) {
+//         errorMessage.map(e => console.log(e))
+//         return
+//       }
+
+//     try{
+//       await axios.post(
+//         "http://localhost:3001/",
+//         employeeData
+//       )
+
+//       await fetchEmployees()
+//       setFormData(employeeData)
+//     }
+//     catch (error){
+//       console.error(error)
+//     }
+//     cancelEdit()

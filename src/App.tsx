@@ -6,13 +6,15 @@ import {useState} from 'react'
 import './App.css'
 import EmployeeForm from './components/EmployeeForm'
 import { useEffect } from 'react'
+import axios from 'axios'
 
 function App() {
 
   const {
     employees,
     loading,
-    error
+    error,
+    addEmployee
   } = useEmployees()
 
 const emptyForm = {
@@ -99,30 +101,7 @@ const filteredEmployee = employees.filter((employee) => {
     setEditingEmployee(null)
   }
 
-  const addEmployee = () => {
-
-    const result = validateForm()
-
-      setErrors(result)
-
-      const errorMessage = Object.values(result)
-      const hasErrors = errorMessage.some(e => e !== "")
-
-      if (hasErrors) {
-        errorMessage.map(e => console.log(e))
-        return
-      }
-
-    const lastEmployee = employees[employees.length -1];
-
-    const newEmployee = {
-     id: lastEmployee.id + 1,
-     ...formData
-    };
-
-    setEmployees([...employees, newEmployee] )
-    cancelEdit()
-     }
+  addEmployee(formData)
 
   const handleInputChange = (
     field: string, value: string
@@ -142,7 +121,7 @@ const filteredEmployee = employees.filter((employee) => {
       saveEmployee()
     }
     else {
-      addEmployee()
+      addEmployee(formData)
     }
   }
 
