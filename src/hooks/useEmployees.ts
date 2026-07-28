@@ -16,15 +16,15 @@ export function useEmployees() {
           setLoading(true)
           setError(null)
           const response = await axios.get<ApiUser[]>(
-            "https://jsonplaceholder.typicode.com/users"
+            "http://localhost:3001/employees/"
           )
     
           const data = response.data
           const newData = data.map((e) => ({
             id: e.id,
             name: e.name,
-            department: e.company.name,
-            position: "Employee",
+            department: e.department,
+            position: e.position,
             email: e.email
           }))
           
@@ -37,19 +37,31 @@ export function useEmployees() {
       }
 
     useEffect(() => {
-        fetchEmployees()
-}, [])
+        const initialize = async () => {
+            await fetchEmployees()
+        }
+
+        void initialize()
+    }, [])
 
     const addEmployee = async (employeeData: EmployeeForm) => {
       await axios.post(
-        "http://localhost:3001/",
+        "http://localhost:3001/employees/",
         employeeData
       )
       await fetchEmployees()
 
      }
 
-  return {employees, loading, error, addEmployee}
+     const updateEmployee = async (
+      id:number,
+      employeeData:EmployeeForm
+     ) => {
+      await axios.put(`http://localhost:3001/employees/${id}`, employeeData)
+      await fetchEmployees()
+     }
+
+  return {employees, loading, error, addEmployee, updateEmployee}
 }
 
 

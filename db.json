@@ -1,3 +1,33 @@
 {
-    "employees": []
+  "employees": [
+    {
+      "id": "G-kcWnJIs9w",
+      "name": "Salim",
+      "department": "IT",
+      "position": "staff",
+      "email": "dodi@gmail.com"
+    },
+    {
+      "name": "Dodi",
+      "department": "IT",
+      "position": "junior staff",
+      "email": "dodi@gmail.com",
+      "id": "CTJyj3VhV4M"
+    },
+    {
+      "name": "Ritwan",
+      "department": "Bokep",
+      "position": "HR",
+      "email": "ritwan!@gmail.com",
+      "id": "cq7Zwgv8ym8"
+    },
+    {
+      "name": "Elena",
+      "department": "HR",
+      "position": "Staff",
+      "email": "elena@gmail.com",
+      "id": "2ZeB_z1YqJE"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

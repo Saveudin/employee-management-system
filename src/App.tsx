@@ -14,7 +14,8 @@ function App() {
     employees,
     loading,
     error,
-    addEmployee
+    addEmployee,
+    updateEmployee
   } = useEmployees()
 
 const emptyForm = {
@@ -101,8 +102,6 @@ const filteredEmployee = employees.filter((employee) => {
     setEditingEmployee(null)
   }
 
-  addEmployee(formData)
-
   const handleInputChange = (
     field: string, value: string
   ) => {
@@ -118,10 +117,14 @@ const filteredEmployee = employees.filter((employee) => {
 
   const handleSubmit = () => {
     if (editingEmployee) {
-      saveEmployee()
+      updateEmployee(editingEmployee.id, formData)
+      setEditingEmployee(null)
+      setFormData(emptyForm)
     }
     else {
       addEmployee(formData)
+      setEditingEmployee(null)
+      setFormData(emptyForm)
     }
   }
 
