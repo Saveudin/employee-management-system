@@ -1,25 +1,11 @@
 {
   "employees": [
     {
-      "id": "G-kcWnJIs9w",
-      "name": "Salim",
-      "department": "IT",
-      "position": "staff",
-      "email": "dodi@gmail.com"
-    },
-    {
       "name": "Dodi",
       "department": "IT",
       "position": "junior staff",
       "email": "dodi@gmail.com",
       "id": "CTJyj3VhV4M"
-    },
-    {
-      "name": "Ritwan",
-      "department": "Bokep",
-      "position": "HR",
-      "email": "ritwan!@gmail.com",
-      "id": "cq7Zwgv8ym8"
     },
     {
       "name": "Elena",

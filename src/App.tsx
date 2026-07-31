@@ -5,8 +5,6 @@ import type { Employee } from './types/Employee'
 import {useState} from 'react'
 import './App.css'
 import EmployeeForm from './components/EmployeeForm'
-import { useEffect } from 'react'
-import axios from 'axios'
 
 function App() {
 
@@ -15,7 +13,8 @@ function App() {
     loading,
     error,
     addEmployee,
-    updateEmployee
+    updateEmployee,
+    deleteEmployee
   } = useEmployees()
 
 const emptyForm = {
@@ -55,37 +54,6 @@ const filteredEmployee = employees.filter((employee) => {
   )
 })
 
-  const saveEmployee = () => {
-      if(!editingEmployee) return
-
-      const result = validateForm()
-
-      setErrors(result)
-
-      const errorMessage = Object.values(result)
-      const hasErrors = errorMessage.some(e => e !== "")
-
-      if (hasErrors) {
-        errorMessage.map(e => console.log(e))
-        return
-      }
-
-      const updatedEmployee = employees.map((employee) => {
-        if(employee.id === editingEmployee.id) {
-          return {...employee, ...formData}
-        }
-        return employee
-      })
-
-      setEmployees(updatedEmployee)
-      setEditingEmployee(null)
-      setFormData(emptyForm)
-  }
-
-  function deleteEmployee(id: number) {
-      setEmployees(employees.filter((employee) => employee.id !== id));
-  }
-
   const editEmployee = (id:number) => {
     const employee = employees.find((employee) => employee.id === id);
 
@@ -115,7 +83,13 @@ const filteredEmployee = employees.filter((employee) => {
     })
   )}
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const result = validateForm()
+
+    if (Object.values(result).some(e => e !== "")){
+      setErrors(result)
+      return
+    }
     if (editingEmployee) {
       updateEmployee(editingEmployee.id, formData)
       setEditingEmployee(null)
@@ -129,6 +103,7 @@ const filteredEmployee = employees.filter((employee) => {
   }
 
   const validateForm = () => {
+
     const newErrors = {
       name: "",
       department:"",

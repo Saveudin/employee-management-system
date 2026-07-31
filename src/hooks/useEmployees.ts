@@ -61,7 +61,13 @@ export function useEmployees() {
       await fetchEmployees()
      }
 
-  return {employees, loading, error, addEmployee, updateEmployee}
+     const deleteEmployee = async (id: number) => {
+      await axios.delete(`http://localhost:3001/employees/${id}`)
+      await fetchEmployees()
+     }
+     
+
+  return {employees, loading, error, addEmployee, updateEmployee, deleteEmployee}
 }
 
 

@@ -1,6 +1,5 @@
 import EmployeeCard from "./EmployeeCard"
 import type { Employee } from "../types/Employee"
-import type { EmployeeForm } from "../types/EmployeeForm"
 
 interface EmployeeListProps {
     loading : boolean,

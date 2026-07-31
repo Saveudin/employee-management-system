@@ -1,5 +1,4 @@
 import type { Employee } from '../types/Employee';
-import type { EmployeeForm } from '../types/EmployeeForm';
 
 interface EmployeeCardProps {
     employee: Employee;
