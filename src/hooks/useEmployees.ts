@@ -4,6 +4,7 @@ import type { ApiUser } from "../types/ApiUser";
 import axios from "axios";
 import { useEffect } from "react";
 import type {EmployeeForm} from "../types/EmployeeForm"
+import type { Employee } from "../types/Employee";
 
 export function useEmployees() {
     const [employees, setEmployees] = useState(initialEmployees);
@@ -66,8 +67,15 @@ export function useEmployees() {
       await fetchEmployees()
      }
      
+     const getEmployeeById = async (id:string|undefined) => {
+      const response = await axios.get<Employee>(
+        `http://localhost:3001/employees/${id}`
+      )
+      
+      return response.data
+     }
 
-  return {employees, loading, error, addEmployee, updateEmployee, deleteEmployee}
+  return {employees, loading, error, addEmployee, updateEmployee, deleteEmployee, getEmployeeById}
 }
 
 

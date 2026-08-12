@@ -3,8 +3,11 @@ import { useEmployees } from './hooks/useEmployees'
 import EmployeeList from './components/EmployeeList'
 import type { Employee } from './types/Employee'
 import {useState} from 'react'
+import {Routes, Route, Link} from 'react-router-dom'
 import './App.css'
 import EmployeeForm from './components/EmployeeForm'
+import Navbar from './components/Navbar'
+import EmployeeDetail from './pages/EmployeeDetail'
 
 function App() {
 
@@ -135,7 +138,19 @@ const filteredEmployee = employees.filter((employee) => {
   }
 
   return (
+
     <div>
+    <Navbar/>
+    
+    <Routes>
+      <Route path="/" element={<h1>Dashboard</h1>}/>
+      <Route path="/employees" element={<h1>Employees</h1>}/>
+      <Route 
+        path="/employees/:id"
+        element={<EmployeeDetail/>}
+      />
+    </Routes>
+
       <h1>Employee Management System</h1>
       <input 
       value={search}
