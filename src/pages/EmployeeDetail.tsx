@@ -9,16 +9,28 @@ function EmployeeDetail () {
     const {id} = useParams()
 
     const [employee, setEmployee] = useState<Employee | null>(null)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         const loadEmployee = async () => {
-            const selectedEmployee = await getEmployeeById(id)
-            setEmployee(selectedEmployee)
+            setLoading(true)
+            setError(null)
+
+            try {
+                const selectedEmployee = await getEmployeeById(id)
+                setEmployee(selectedEmployee)
+            } catch {
+                setError("Failed to load employee")
+            } finally {
+                setLoading(false)
+            }
         }
 
         loadEmployee()
-    }, [id])
+    }, [id, getEmployeeById])
 
+    console.log("EmployeeDetail")
     return (
         <div>
             <h1>Employee Detail</h1>

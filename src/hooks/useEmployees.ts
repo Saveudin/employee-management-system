@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { initialEmployees } from "../data/employees";
 import type { ApiUser } from "../types/ApiUser";
 import axios from "axios";
@@ -7,11 +7,11 @@ import type {EmployeeForm} from "../types/EmployeeForm"
 import type { Employee } from "../types/Employee";
 
 export function useEmployees() {
-    const [employees, setEmployees] = useState(initialEmployees);
+    const [employees, setEmployees] = useState<Employee[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null)
 
-    const fetchEmployees = async () => {
+    const fetchEmployees = useCallback(async () => {
         
         try {
           setLoading(true)
@@ -19,23 +19,14 @@ export function useEmployees() {
           const response = await axios.get<ApiUser[]>(
             "http://localhost:3001/employees/"
           )
-    
-          const data = response.data
-          const newData = data.map((e) => ({
-            id: e.id,
-            name: e.name,
-            department: e.department,
-            position: e.position,
-            email: e.email
-          }))
           
-          setEmployees(newData)
+          setEmployees(response.data)
         } catch (error) {
             setError("Failed to fetch employee")
         } finally {
           setLoading(false)
         }
-      }
+      }, [])
 
     useEffect(() => {
         const initialize = async () => {
@@ -43,7 +34,7 @@ export function useEmployees() {
         }
 
         void initialize()
-    }, [])
+    }, [fetchEmployees])
 
     const addEmployee = async (employeeData: EmployeeForm) => {
       await axios.post(
@@ -67,13 +58,15 @@ export function useEmployees() {
       await fetchEmployees()
      }
      
-     const getEmployeeById = async (id:string|undefined) => {
+     const getEmployeeById = useCallback(async (id:string|undefined) => {
       const response = await axios.get<Employee>(
         `http://localhost:3001/employees/${id}`
       )
       
       return response.data
-     }
+     }, [])
+
+     console.log("useEmployees render")
 
   return {employees, loading, error, addEmployee, updateEmployee, deleteEmployee, getEmployeeById}
 }
